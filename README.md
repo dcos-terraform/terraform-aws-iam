@@ -20,7 +20,7 @@ module "dcos-iam" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster_name | Specify the cluster name all resources get named and tagged with | string | - | yes |
+| cluster_name | Cluster name all resources get named and tagged with | string | - | yes |
 
 ## Outputs
 
