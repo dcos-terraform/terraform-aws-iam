@@ -1,3 +1,3 @@
 variable "cluster_name" {
-  description = "Specify the cluster name all resources get named and tagged with"
+  description = "Cluster name all resources get named and tagged with"
 }
