@@ -20,12 +20,12 @@ module "dcos-iam" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster_name | Cluster name all resources get named and tagged with | string | - | yes |
+| cluster_name | Name of the DC/OS cluster | string | - | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| aws_agent_profile | Name of the agents profile |
+| aws_agent_profile | Name of the agent profile |
 | aws_master_profile | Name of the masters profile |
 
