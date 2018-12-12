@@ -9,7 +9,7 @@
  * ```hcl
  * module "dcos-iam" {
  *   source  = "dcos-terraform/iam/aws"
- *   version = "~> 0.1"
+ *   version = "~> 0.1.0"
  *
  *   cluster_name = "production"
  * }
