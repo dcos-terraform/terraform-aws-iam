@@ -9,7 +9,7 @@
  * ```hcl
  * module "dcos-iam" {
  *   source  = "dcos-terraform/iam/aws"
- *   version = "~> 0.1"
+ *   version = "~> 0.1.0"
  *
  *   cluster_name = "production"
  * }
@@ -180,6 +180,25 @@ resource "aws_iam_role_policy" "master_policy" {
 {
     "Version": "2012-10-17",
     "Statement": [
+      {
+          "Sid": "DCOSExternalExhibitorBucketLevel",
+          "Effect": "Allow",
+          "Action": [
+              "s3:ListBucket"
+          ],
+          "Resource": "arn:aws:s3:::${coalesce(var.aws_s3_bucket, "soak-cluster-logs")}"
+      },
+      {
+          "Sid": "DCOSExternalExhibitorObjectLevel",
+          "Effect": "Allow",
+          "Action": [
+              "s3:PutObject",
+              "s3:GetObject",
+              "s3:DeleteObject"
+              
+          ],
+          "Resource": "arn:aws:s3:::${coalesce(var.aws_s3_bucket, "soak-cluster-logs")}/*"
+      },
       {
           "Sid": "SoakClusterLogsArchiveBucketLevel",
           "Effect": "Allow",
