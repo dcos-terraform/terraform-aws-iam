@@ -173,8 +173,9 @@ resource "aws_iam_instance_profile" "master_profile" {
 }
 
 resource "aws_iam_role_policy" "master_policy" {
-  name = "dcos-${var.cluster_name}-master_instance_policy"
-  role = "${aws_iam_role.master_role.id}"
+  count = "${var.aws_s3_bucket != "" ? 1 : 0}"
+  name  = "dcos-${var.cluster_name}-master_instance_policy"
+  role  = "${aws_iam_role.master_role.id}"
 
   policy = <<EOF
 {
@@ -186,7 +187,7 @@ resource "aws_iam_role_policy" "master_policy" {
           "Action": [
               "s3:ListBucket"
           ],
-          "Resource": "arn:aws:s3:::${coalesce(var.aws_s3_bucket, "soak-cluster-logs")}"
+          "Resource": "arn:aws:s3:::${var.aws_s3_bucket}"
       },
       {
           "Sid": "DCOSExternalExhibitorObjectLevel",
@@ -197,30 +198,7 @@ resource "aws_iam_role_policy" "master_policy" {
               "s3:DeleteObject"
               
           ],
-          "Resource": "arn:aws:s3:::${coalesce(var.aws_s3_bucket, "soak-cluster-logs")}/*"
-      },
-      {
-          "Sid": "SoakClusterLogsArchiveBucketLevel",
-          "Effect": "Allow",
-          "Action": [
-              "s3:ListBucket"
-          ],
-          "Resource": "arn:aws:s3:::soak-cluster-logs"
-      },
-      {
-          "Sid": "SoakClusterLogsArchiveObjectLevel",
-          "Effect": "Allow",
-          "Action": [
-              "s3:PutObject"
-          ],
-          "Resource": "arn:aws:s3:::soak-cluster-logs/*"
-      },
-      {
-          "Effect": "Allow",
-          "Action": [
-              "es:*"
-          ],
-          "Resource": "arn:aws:es:us-east-1:159577368695:domain/scaletestlogsinkpublic/*"
+          "Resource": "arn:aws:s3:::${var.aws_s3_bucket}/*"
       }
     ]
 }
