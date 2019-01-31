@@ -22,6 +22,7 @@ module "dcos-iam" {
 |------|-------------|:----:|:-----:|:-----:|
 | aws_s3_bucket | S3 Bucket for External Exhibitor | string | `` | no |
 | cluster_name | Name of the DC/OS cluster | string | - | yes |
+| name_prefix | Name prefix | string | `` | no |
 
 ## Outputs
 
