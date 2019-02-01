@@ -18,7 +18,7 @@
  */
 
 locals {
-  cluster_name = "${var.name_prefix != "" ? "${var.cluster_name}-${var.name_prefix}" : var.cluster_name}"
+  cluster_name = "${var.name_prefix != "" ? "${var.name_prefix}-${var.cluster_name}" : var.cluster_name}"
 }
 
 # Define IAM role to create external volumes on AWS
