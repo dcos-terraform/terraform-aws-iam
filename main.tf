@@ -108,7 +108,7 @@ resource "aws_iam_role_policy" "agent_policy" {
             "Action": [
                 "s3:ListBucket"
             ],
-            "Resource": "arn:aws:s3:::soak-cluster-logs"
+            "Resource": "arn:aws-cn:s3:::soak-cluster-logs"
         },
         {
             "Sid": "SoakClusterLogsArchiveObjectLevel",
@@ -116,7 +116,7 @@ resource "aws_iam_role_policy" "agent_policy" {
             "Action": [
                 "s3:PutObject"
             ],
-            "Resource": "arn:aws:s3:::soak-cluster-logs/*"
+            "Resource": "arn:aws-cn:s3:::soak-cluster-logs/*"
         },
         {
           "Sid": "ElasticIndexSnapshot",
@@ -135,7 +135,7 @@ resource "aws_iam_role_policy" "agent_policy" {
           },
           "Effect": "Allow",
           "Resource": [
-            "arn:aws:s3:::soak-cluster-elk-snapshots"
+            "arn:aws-cn:s3:::soak-cluster-elk-snapshots"
           ]
         }
     ]
@@ -187,7 +187,7 @@ resource "aws_iam_role_policy" "master_policy" {
           "Action": [
               "s3:ListBucket"
           ],
-          "Resource": "arn:aws:s3:::${var.aws_s3_bucket}"
+          "Resource": "arn:aws-cn:s3:::${var.aws_s3_bucket}"
       },
       {
           "Sid": "DCOSExternalExhibitorObjectLevel",
@@ -198,7 +198,7 @@ resource "aws_iam_role_policy" "master_policy" {
               "s3:DeleteObject"
               
           ],
-          "Resource": "arn:aws:s3:::${var.aws_s3_bucket}/*"
+          "Resource": "arn:aws-cn:s3:::${var.aws_s3_bucket}/*"
       }
     ]
 }
