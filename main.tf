@@ -153,7 +153,7 @@ resource "aws_iam_role" "agent_role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": "ec2.amazonaws.com.cn"
       },
       "Effect": "Allow",
       "Sid": ""
@@ -215,7 +215,7 @@ resource "aws_iam_role" "master_role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": "ec2.amazonaws.com.cn"
       },
       "Effect": "Allow",
       "Sid": ""
