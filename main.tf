@@ -17,9 +17,13 @@
  *
  */
 
+locals {
+  cluster_name = "${var.name_prefix != "" ? "${var.name_prefix}-${var.cluster_name}" : var.cluster_name}"
+}
+
 # Define IAM role to create external volumes on AWS
 resource "aws_iam_instance_profile" "agent_profile" {
-  name = "dcos-${var.cluster_name}-instance_profile"
+  name = "dcos-${local.cluster_name}-instance_profile"
   role = "${aws_iam_role.agent_role.name}"
 
   lifecycle {
@@ -28,7 +32,7 @@ resource "aws_iam_instance_profile" "agent_profile" {
 }
 
 resource "aws_iam_role_policy" "agent_policy" {
-  name = "dcos-${var.cluster_name}-instance_policy"
+  name = "dcos-${local.cluster_name}-instance_policy"
   role = "${aws_iam_role.agent_role.id}"
 
   policy = <<EOF
@@ -129,7 +133,7 @@ resource "aws_iam_role_policy" "agent_policy" {
           "Condition": {
             "StringLike": {
               "s3:cluster_name": [
-                "${var.cluster_name}/*"
+                "${local.cluster_name}/*"
               ]
             }
           },
@@ -144,7 +148,7 @@ EOF
 }
 
 resource "aws_iam_role" "agent_role" {
-  name = "dcos-${var.cluster_name}-instance_role"
+  name = "dcos-${local.cluster_name}-instance_role"
 
   assume_role_policy = <<EOF
 {
@@ -164,7 +168,7 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "master_profile" {
-  name = "dcos-${var.cluster_name}-master_instance_profile"
+  name = "dcos-${local.cluster_name}-master_instance_profile"
   role = "${aws_iam_role.master_role.name}"
 
   lifecycle {
@@ -174,7 +178,7 @@ resource "aws_iam_instance_profile" "master_profile" {
 
 resource "aws_iam_role_policy" "master_policy" {
   count = "${var.aws_s3_bucket != "" ? 1 : 0}"
-  name  = "dcos-${var.cluster_name}-master_instance_policy"
+  name  = "dcos-${local.cluster_name}-master_instance_policy"
   role  = "${aws_iam_role.master_role.id}"
 
   policy = <<EOF
@@ -206,7 +210,7 @@ EOF
 }
 
 resource "aws_iam_role" "master_role" {
-  name = "dcos-${var.cluster_name}-master_instance_role"
+  name = "dcos-${local.cluster_name}-master_instance_role"
 
   assume_role_policy = <<EOF
 {
