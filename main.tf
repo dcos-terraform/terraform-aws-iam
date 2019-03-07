@@ -17,6 +17,13 @@
  *
  */
 
+data "aws_region" "current" {}
+
+locals {
+  ec2_service_principal = "${substr(data.aws_region.current.name, 0, 3) == "cn-" ? "ec2.amazonaws.com.cn" : "ec2.amazonaws.com"}"
+  aws_partition = "${substr(data.aws_region.current.name, 0, 3) == "cn-" ? "aws-cn" : "aws"}"
+}
+
 # Define IAM role to create external volumes on AWS
 resource "aws_iam_instance_profile" "agent_profile" {
   name = "dcos-${var.cluster_name}-instance_profile"
@@ -108,7 +115,7 @@ resource "aws_iam_role_policy" "agent_policy" {
             "Action": [
                 "s3:ListBucket"
             ],
-            "Resource": "arn:aws:s3:::soak-cluster-logs"
+            "Resource": "arn:${local.aws_partition}:s3:::soak-cluster-logs"
         },
         {
             "Sid": "SoakClusterLogsArchiveObjectLevel",
@@ -116,7 +123,7 @@ resource "aws_iam_role_policy" "agent_policy" {
             "Action": [
                 "s3:PutObject"
             ],
-            "Resource": "arn:aws:s3:::soak-cluster-logs/*"
+            "Resource": "arn:${local.aws_partition}:s3:::soak-cluster-logs/*"
         },
         {
           "Sid": "ElasticIndexSnapshot",
@@ -135,7 +142,7 @@ resource "aws_iam_role_policy" "agent_policy" {
           },
           "Effect": "Allow",
           "Resource": [
-            "arn:aws:s3:::soak-cluster-elk-snapshots"
+            "arn:${local.aws_partition}:s3:::soak-cluster-elk-snapshots"
           ]
         }
     ]
@@ -153,7 +160,7 @@ resource "aws_iam_role" "agent_role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": "${local.ec2_service_principal}"
       },
       "Effect": "Allow",
       "Sid": ""
@@ -187,7 +194,7 @@ resource "aws_iam_role_policy" "master_policy" {
           "Action": [
               "s3:ListBucket"
           ],
-          "Resource": "arn:aws:s3:::${var.aws_s3_bucket}"
+          "Resource": "arn:${local.aws_partition}:s3:::${var.aws_s3_bucket}"
       },
       {
           "Sid": "DCOSExternalExhibitorObjectLevel",
@@ -198,7 +205,7 @@ resource "aws_iam_role_policy" "master_policy" {
               "s3:DeleteObject"
               
           ],
-          "Resource": "arn:aws:s3:::${var.aws_s3_bucket}/*"
+          "Resource": "arn:${local.aws_partition}:s3:::${var.aws_s3_bucket}/*"
       }
     ]
 }
@@ -215,7 +222,7 @@ resource "aws_iam_role" "master_role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": "${local.ec2_service_principal}"
       },
       "Effect": "Allow",
       "Sid": ""
