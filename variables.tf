@@ -8,6 +8,6 @@ variable "aws_s3_bucket" {
 }
 
 variable "name_prefix" {
-  description = "Name prefix"
+  description = "Name Prefix"
   default     = ""
 }
