@@ -176,12 +176,8 @@ resource "aws_iam_instance_profile" "master_profile" {
   }
 }
 
-resource "aws_iam_role_policy" "master_policy" {
-  count = "${var.aws_s3_bucket != "" ? 1 : 0}"
-  name  = "dcos-${local.cluster_name}-master_instance_policy"
-  role  = "${aws_iam_role.master_role.id}"
-
-  policy = <<EOF
+locals {
+  bucket_policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -200,13 +196,31 @@ resource "aws_iam_role_policy" "master_policy" {
               "s3:PutObject",
               "s3:GetObject",
               "s3:DeleteObject"
-              
           ],
           "Resource": "arn:aws:s3:::${var.aws_s3_bucket}/*"
       }
     ]
 }
 EOF
+
+  // we need a valid policy so lets take an example
+  nothing_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "s3:ListBucket",
+    "Resource": "arn:aws:s3:::example_bucket"
+  }
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "master_policy" {
+  name = "dcos-${local.cluster_name}-master_instance_policy"
+  role = "${aws_iam_role.master_role.id}"
+
+  policy = "${var.aws_s3_bucket != "" ? local.bucket_policy : local.nothing_policy }"
 }
 
 resource "aws_iam_role" "master_role" {
