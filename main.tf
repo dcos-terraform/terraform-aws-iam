@@ -21,7 +21,7 @@ data "aws_region" "current" {}
 
 locals {
   ec2_service_principal = "${substr(data.aws_region.current.name, 0, 3) == "cn-" ? "ec2.amazonaws.com.cn" : "ec2.amazonaws.com"}"
-  aws_partition = "${substr(data.aws_region.current.name, 0, 3) == "cn-" ? "aws-cn" : "aws"}"
+  aws_partition         = "${substr(data.aws_region.current.name, 0, 3) == "cn-" ? "aws-cn" : "aws"}"
 }
 
 # Define IAM role to create external volumes on AWS

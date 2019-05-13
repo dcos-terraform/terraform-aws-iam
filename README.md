@@ -2,7 +2,6 @@ AWS IAM Policies
 ===============
 This is an module to creates policies and roles to be used with DC/OS
 
-
 EXAMPLE
 -------
 ```hcl
@@ -14,19 +13,17 @@ module "dcos-iam" {
 }
 ```
 
-
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| aws_s3_bucket | S3 Bucket for External Exhibitor | string | `` | no |
-| cluster_name | Name of the DC/OS cluster | string | - | yes |
+| cluster\_name | Name of the DC/OS cluster | string | n/a | yes |
+| aws\_s3\_bucket | S3 Bucket for External Exhibitor | string | `""` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| aws_agent_profile | Name of the agent profile |
-| aws_master_profile | Name of the masters profile |
+| aws\_agent\_profile | Name of the agent profile |
+| aws\_master\_profile | Name of the masters profile |
 
