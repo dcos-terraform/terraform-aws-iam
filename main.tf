@@ -134,6 +134,14 @@ resource "aws_iam_role_policy" "agent_policy" {
             "Effect": "Allow"
         },
         {
+            "Sid": "InstanceAssumeRole",
+            "Action": [
+              "sts:AssumeRole"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
             "Sid": "SoakClusterLogsArchiveBucketLevel",
             "Effect": "Allow",
             "Action": [
