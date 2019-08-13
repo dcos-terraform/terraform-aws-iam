@@ -107,6 +107,33 @@ resource "aws_iam_role_policy" "agent_policy" {
             "Effect": "Allow"
         },
         {
+            "Sid": "EdgeLB",
+            "Action": [
+              "elasticloadbalancing:DescribeLoadBalancers",
+              "elasticloadbalancing:CreateLoadBalancer",
+              "elasticloadbalancing:DeleteLoadBalancer",
+              "elasticloadbalancing:DescribeListeners",
+              "elasticloadbalancing:CreateListener",
+              "elasticloadbalancing:DeleteListener",
+              "elasticloadbalancing:ModifyListener",
+              "elasticloadbalancing:CreateTargetGroup",
+              "elasticloadbalancing:DeleteTargetGroup",
+              "elasticloadbalancing:DescribeTargetGroups",
+              "elasticloadbalancing:ModifyTargetGroup",
+              "elasticloadbalancing:RegisterTargets",
+              "elasticloadbalancing:DeregisterTargets",
+              "elasticloadbalancing:DescribeTargetHealth",
+              "elasticloadbalancing:DescribeLoadBalancerAttributes",
+              "elasticloadbalancing:ModifyLoadBalancerAttributes",
+              "elasticloadbalancing:DescribeTags",
+              "elasticloadbalancing:AddTags",
+              "elasticloadbalancing:RemoveTags",
+              "ec2:DescribeAddresses"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
             "Sid": "SoakClusterLogsArchiveBucketLevel",
             "Effect": "Allow",
             "Action": [
