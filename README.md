@@ -26,5 +26,6 @@ module "dcos-iam" {
 | Name | Description |
 |------|-------------|
 | aws\_agent\_profile | Name of the agent profile |
+| aws\_agent\_role | Name of the agent role |
 | aws\_master\_profile | Name of the masters profile |
-
+| aws\_master\_role | Name of the masters role |
