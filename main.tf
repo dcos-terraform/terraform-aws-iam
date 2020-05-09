@@ -9,7 +9,7 @@
  * ```hcl
  * module "dcos-iam" {
  *   source  = "dcos-terraform/iam/aws"
- *   version = "~> 0.2.0"
+ *   version = "~> 0.3.0"
  *
  *   cluster_name = "production"
  * }
@@ -18,13 +18,13 @@
  */
 
 locals {
-  cluster_name = "${var.name_prefix != "" ? "${var.name_prefix}-${var.cluster_name}" : var.cluster_name}"
+  cluster_name = var.name_prefix != "" ? "${var.name_prefix}-${var.cluster_name}" : var.cluster_name
 }
 
 # Define IAM role to create external volumes on AWS
 resource "aws_iam_instance_profile" "agent_profile" {
   name = "dcos-${local.cluster_name}-instance_profile"
-  role = "${aws_iam_role.agent_role.name}"
+  role = aws_iam_role.agent_role.name
 
   lifecycle {
     create_before_destroy = true
@@ -33,7 +33,7 @@ resource "aws_iam_instance_profile" "agent_profile" {
 
 resource "aws_iam_role_policy" "agent_policy" {
   name = "dcos-${local.cluster_name}-instance_policy"
-  role = "${aws_iam_role.agent_role.id}"
+  role = aws_iam_role.agent_role.id
 
   policy = <<EOF
 {
@@ -180,6 +180,7 @@ resource "aws_iam_role_policy" "agent_policy" {
     ]
 }
 EOF
+
 }
 
 resource "aws_iam_role" "agent_role" {
@@ -200,11 +201,12 @@ resource "aws_iam_role" "agent_role" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_instance_profile" "master_profile" {
   name = "dcos-${local.cluster_name}-master_instance_profile"
-  role = "${aws_iam_role.master_role.name}"
+  role = aws_iam_role.master_role.name
 
   lifecycle {
     create_before_destroy = true
@@ -238,6 +240,7 @@ locals {
 }
 EOF
 
+
   // we need a valid policy so lets take an example
   nothing_policy = <<EOF
 {
@@ -249,13 +252,14 @@ EOF
   }
 }
 EOF
+
 }
 
 resource "aws_iam_role_policy" "master_policy" {
   name = "dcos-${local.cluster_name}-master_instance_policy"
-  role = "${aws_iam_role.master_role.id}"
+  role = aws_iam_role.master_role.id
 
-  policy = "${var.aws_s3_bucket != "" ? local.bucket_policy : local.nothing_policy }"
+  policy = var.aws_s3_bucket != "" ? local.bucket_policy : local.nothing_policy
 }
 
 resource "aws_iam_role" "master_role" {
@@ -276,4 +280,6 @@ resource "aws_iam_role" "master_role" {
   ]
 }
 EOF
+
 }
+
